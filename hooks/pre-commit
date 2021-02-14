@@ -2,5 +2,27 @@
 
 # Filter only uncommited c files
 CFILES=$(git diff --name-only --diff-filter=A HEAD -- '***.c' '***.h')
+ERROR=false
+
+echo "#########"
+echo "# betty #"
+echo "#########"
+for file in $CFILES
+do
+        if [[ -f "$file" ]];
+        then
+                betty $file
+
+		if [[ ! "$?" = "0" ]];
+		then
+			ERROR=true
+		fi
+        fi
+done
+
+if [[ $ERROR = true ]];
+then
+	exit 1
+fi
 
 exit 0

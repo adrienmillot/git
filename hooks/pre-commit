@@ -4,21 +4,23 @@
 CFILES=$(git diff --name-only --diff-filter=A HEAD -- '***.c' '***.h')
 ERROR=false
 
-echo "#########"
-echo "# betty #"
-echo "#########"
-for file in $CFILES
-do
-        if [[ -f "$file" ]];
-        then
-                betty $file
-
-		if [[ ! "$?" = "0" ]];
+if [ -n "$CFILES" ]; then
+	echo "#########"
+	echo "# betty #"
+	echo "#########"
+	for file in $CFILES
+	do
+		if [[ -f "$file" ]];
 		then
-			ERROR=true
+			betty $file
+
+			if [[ ! "$?" = "0" ]];
+			then
+				ERROR=true
+			fi
 		fi
-        fi
-done
+	done
+fi
 
 if [[ $ERROR = true ]];
 then
